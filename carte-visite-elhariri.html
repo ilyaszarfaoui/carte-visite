@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte de Visite - Abdelaziz EL HARIRI | Services Techniques</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 450px;
+            position: relative;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .logo {
+            font-size: 48px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .name {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .services-header {
+            color: rgba(255,255,255,0.95);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .card-body {
+            padding: 50px 30px 30px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .service-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+            font-size: 13px;
+            color: #333;
+            transition: transform 0.2s;
+        }
+
+        .service-item:hover {
+            transform: translateX(5px);
+            background: #f0f0f0;
+        }
+
+        .service-icon {
+            margin-right: 5px;
+        }
+
+        .info-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .qr-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+            width: 450px;
+            text-align: center;
+        }
+
+        .qr-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .qr-instructions {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin: 5px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .address-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff9f5;
+            border-radius: 10px;
+            border: 1px solid #ffebe5;
+        }
+
+        .address-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card, .qr-section {
+                width: 100%;
+                max-width: 450px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .qr-section {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="logo-container">
+                    <div class="logo">AE</div>
+                </div>
+                <h1 class="name">Abdelaziz EL HARIRI</h1>
+                <p class="services-header">
+                    Expert en Services Techniques<br>
+                    Plomberie • Électricité • Climatisation
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="services-grid">
+                    <div class="service-item">
+                        <span class="service-icon">🔧</span> Plomberie
+                    </div>
+                    <div class="service-item">
+                        <span class="service-icon">🔥</span> Chauffage Central
+                    </div>
+                    <div class="service-item">
+                        <span class="service-icon">⚡</span> Électricité
+                    </div>
+                    <div class="service-item">
+                        <span class="service-icon">🏗️</span> Faux Plafond
+                    </div>
+                    <div class="service-item">
+                        <span class="service-icon">💧</span> Protection d'Eau
+                    </div>
+                    <div class="service-item">
+                        <span class="service-icon">❄️</span> Climatisation
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-item">
+                        <div class="info-icon">📱</div>
+                        <div class="info-text">
+                            <div class="info-label">Téléphones</div>
+                            <div class="info-value">
+                                05 22 86 58 15 • 06 61 19 16 09
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div class="info-text">
+                            <div class="info-label">Email</div>
+                            <div class="info-value">contact@elhariri.ma</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="address-section">
+                    <div class="address-text">
+                        <strong>Adresse:</strong><br>
+                        Route de Azamia, Lot Bir N° 2 - AIN Sebaa<br>
+                        Casablanca, Maroc
+                        <br>
+                        <span class="badge">Coordonnées: 20250</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="qr-section">
+            <h2 class="qr-title">📱 QR Code Contact</h2>
+            <div id="qrcode"></div>
+            <p class="qr-instructions">
+                <strong>Scannez pour enregistrer le contact</strong><br>
+                Compatible avec tous les smartphones
+            </p>
+            <button class="download-btn" onclick="downloadVCard()">📥 Télécharger Contact</button>
+            <button class="download-btn" onclick="downloadQRCode()">📸 Sauvegarder QR Code</button>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                <h3 style="margin-bottom: 15px; color: #333;">Services disponibles 24/7</h3>
+                <ul style="text-align: left; color: #666; font-size: 14px; line-height: 1.8;">
+                    <li>✅ Intervention d'urgence</li>
+                    <li>✅ Devis gratuit</li>
+                    <li>✅ Travail garanti</li>
+                    <li>✅ Équipe professionnelle</li>
+                    <li>✅ Prix compétitifs</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #fff3e0; border-radius: 10px; border: 1px solid #ffe0b2;">
+                <p style="color: #e65100; font-size: 13px; margin: 0;">
+                    <strong>⚡ Service Express</strong><br>
+                    Disponible pour interventions urgentes
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let qrcode = null;
+
+        function generateVCardString() {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Abdelaziz EL HARIRI
+ORG:Services Techniques EL HARIRI
+TITLE:Expert Plomberie - Électricité - Climatisation
+TEL;TYPE=WORK:+212522865815
+TEL;TYPE=CELL:+212661191609
+EMAIL:contact@elhariri.ma
+ADR;TYPE=WORK:;;Route de Azamia Lot Bir N°2;Casablanca;AIN Sebaa;20250;Maroc
+NOTE:Services: Plomberie, Chauffage Central, Électricité, Faux Plafond, Protection d'Eau, Climatisation
+END:VCARD`;
+
+            return vcard;
+        }
+
+        function generateQRCode() {
+            const vcard = generateVCardString();
+            
+            // Clear existing QR code
+            document.getElementById('qrcode').innerHTML = '';
+            
+            // Generate new QR code
+            qrcode = new QRCode(document.getElementById('qrcode'), {
+                text: vcard,
+                width: 256,
+                height: 256,
+                colorDark : '#000000',
+                colorLight : '#ffffff',
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        function downloadVCard() {
+            const vcard = generateVCardString();
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'abdelaziz-elhariri-contact.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function downloadQRCode() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const url = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'qrcode-elhariri.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+
+        // Initialize QR code on page load
+        window.onload = function() {
+            generateQRCode();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdelaziz EL HARIRI - Expert Services Techniques</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 400px;
+            height: 550px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .flip-card-front {
+            background: white;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            padding: 40px 20px;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #eb3349;
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(235, 51, 73, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(235, 51, 73, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(235, 51, 73, 0); }
+        }
+
+        .name-title {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .name-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .name-title p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .service-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .service-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-info {
+            text-align: left;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .qr-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            width: 400px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #qrcode {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border: 3px solid #f0f0f0;
+            border-radius: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(235, 51, 73, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .features-list {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feature-icon {
+            color: #4caf50;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1);
+        }
+
+        .badge-urgent {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff5252;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 900px) {
+            .main-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .flip-card, .qr-panel {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <!-- Carte avec effet flip -->
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <!-- Face avant -->
+                <div class="flip-card-front">
+                    <div class="card-header">
+                        <div class="profile-avatar">AE</div>
+                        <div class="name-title">
+                            <h1>Abdelaziz EL HARIRI</h1>
+                            <p>Expert Services Techniques</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="services-list">
+                            <div class="service-badge">
+                                <i class="fas fa-wrench"></i> Plomberie
+                            </div>
+                            <div class="service-badge">
+                                <i class="fas fa-fire"></i> Chauffage
+                            </div>
+                            <div class="service-badge">
+                                <i class="fas fa-bolt"></i> Électricité
+                            </div>
+                            <div class="service-badge">
+                                <i class="fas fa-home"></i> Faux Plafond
+                            </div>
+                            <div class="service-badge">
+                                <i class="fas fa-tint"></i> Protection d'Eau
+                            </div>
+                            <div class="service-badge">
+                                <i class="fas fa-snowflake"></i> Climatisation
+                            </div>
+                        </div>
+
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Téléphones</div>
+                                    <div class="contact-value">05 22 86 58 15 • 06 61 19 16 09</div>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Email</div>
+                                    <div class="contact-value">contact@elhariri.ma</div>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <div class="contact-label">Adresse</div>
+                                    <div class="contact-value">Route de Azamia, AIN Sebaa</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="badge-urgent">24/7</span>
+                </div>
+
+                <!-- Face arrière -->
+                <div class="flip-card-back">
+                    <h2 style="margin-bottom: 20px;">Nos Engagements</h2>
+                    <div style="text-align: left; width: 100%;">
+                        <p style="margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Intervention rapide 24h/24</p>
+                        <p style="margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Devis gratuit et détaillé</p>
+                        <p style="margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Travaux garantis</p>
+                        <p style="margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Équipe qualifiée</p>
+                        <p style="margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Prix compétitifs</p>
+                        <p style="margin-bottom: 15px;"><i class="fas fa-check-circle"></i> Service après-vente</p>
+                    </div>
+                    <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.2); border-radius: 15px;">
+                        <h3 style="margin-bottom: 10px;">Zone d'intervention</h3>
+                        <p>Casablanca et région</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panneau QR Code -->
+        <div class="qr-panel">
+            <h2 style="color: #333; margin-bottom: 10px;">
+                <i class="fas fa-qrcode"></i> Carte de Visite Digitale
+            </h2>
+            <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                Scannez pour enregistrer le contact
+            </p>
+            
+            <div id="qrcode"></div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="downloadVCard()">
+                    <i class="fas fa-download"></i> Contact
+                </button>
+                <button class="btn btn-secondary" onclick="downloadQR()">
+                    <i class="fas fa-image"></i> QR Code
+                </button>
+            </div>
+
+            <div class="features-list">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px;">
+                    Services disponibles
+                </h3>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    Installation complète
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    Maintenance préventive
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    Dépannage urgent
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    Rénovation
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    Conseil technique
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="tel:0522865815" class="social-link">
+                    <i class="fas fa-phone"></i>
+                </a>
+                <a href="mailto:contact@elhariri.ma" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fas fa-globe"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Générer le vCard
+        function generateVCard() {
+            return `BEGIN:VCARD
+VERSION:3.0
+FN:Abdelaziz EL HARIRI
+ORG:Services Techniques EL HARIRI
+TITLE:Expert Plomberie - Électricité - Climatisation
+TEL;TYPE=WORK:+212522865815
+TEL;TYPE=CELL:+212661191609
+EMAIL:contact@elhariri.ma
+ADR;TYPE=WORK:;;Route de Azamia Lot Bir N°2;Casablanca;AIN Sebaa;20250;Maroc
+NOTE:Services: Plomberie, Chauffage Central, Électricité, Faux Plafond, Protection d'Eau, Climatisation - Disponible 24/7
+END:VCARD`;
+        }
+
+        // Générer le QR Code au chargement
+        window.onload = function() {
+            const vcard = generateVCard();
+            new QRCode(document.getElementById("qrcode"), {
+                text: vcard,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        };
+
+        // Télécharger le vCard
+        function downloadVCard() {
+            const vcard = generateVCard();
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'abdelaziz-elhariri.vcf';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Télécharger le QR Code
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'qrcode-elhariri.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>

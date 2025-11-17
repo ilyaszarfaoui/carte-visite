@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte de Visite - Kamal | GROUPE CASHPLUS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 400px;
+            position: relative;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #667eea;
+            font-weight: bold;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .name {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 50px 30px 30px;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .info-text {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #333;
+            word-break: break-word;
+        }
+
+        .skills-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .skills-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .qr-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .qr-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .qr-instructions {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin: 5px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .input-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .update-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card, .qr-section {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="profile-pic" id="profileInitial">K</div>
+                <h1 class="name" id="displayName">Kamal</h1>
+                <p class="title" id="displayTitle">Administrateur Base de Données & Développeur</p>
+                <p class="company" id="displayCompany">GROUPE CASHPLUS</p>
+            </div>
+            <div class="card-body">
+                <div class="info-section">
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div class="info-text">
+                            <div class="info-label">Email</div>
+                            <div class="info-value" id="displayEmail">kamal@cashplus.ma</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📱</div>
+                        <div class="info-text">
+                            <div class="info-label">Téléphone</div>
+                            <div class="info-value" id="displayPhone">+212 6XX XXX XXX</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌐</div>
+                        <div class="info-text">
+                            <div class="info-label">Site Web</div>
+                            <div class="info-value" id="displayWebsite">www.cashplus.ma</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-text">
+                            <div class="info-label">Localisation</div>
+                            <div class="info-value" id="displayLocation">Casablanca, Maroc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-section">
+                    <h3 class="skills-title">Compétences</h3>
+                    <div class="skill-tags" id="skillTags">
+                        <span class="skill-tag">SQL Server</span>
+                        <span class="skill-tag">Database Admin</span>
+                        <span class="skill-tag">Frappe/ERPNext</span>
+                        <span class="skill-tag">VBScript</span>
+                        <span class="skill-tag">Crystal Reports</span>
+                        <span class="skill-tag">OptiBoard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="qr-section">
+            <h2 class="qr-title">QR Code - Carte de Visite</h2>
+            <div id="qrcode"></div>
+            <p class="qr-instructions">
+                Scannez ce QR code pour enregistrer automatiquement mes coordonnées dans votre téléphone
+            </p>
+            <button class="download-btn" onclick="downloadVCard()">📥 Télécharger vCard</button>
+            <button class="download-btn" onclick="downloadQRCode()">📸 Télécharger QR Code</button>
+            
+            <div class="input-section">
+                <h3 style="margin-bottom: 15px; color: #333;">Personnaliser la carte</h3>
+                <div class="input-group">
+                    <label class="input-label">Nom complet</label>
+                    <input type="text" class="input-field" id="inputName" value="Kamal" onchange="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Poste</label>
+                    <input type="text" class="input-field" id="inputTitle" value="Administrateur Base de Données & Développeur" onchange="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Entreprise</label>
+                    <input type="text" class="input-field" id="inputCompany" value="GROUPE CASHPLUS" onchange="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Email</label>
+                    <input type="email" class="input-field" id="inputEmail" value="kamal@cashplus.ma" onchange="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Téléphone</label>
+                    <input type="tel" class="input-field" id="inputPhone" value="+212 6XX XXX XXX" onchange="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Site Web</label>
+                    <input type="text" class="input-field" id="inputWebsite" value="www.cashplus.ma" onchange="updateCard()">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Localisation</label>
+                    <input type="text" class="input-field" id="inputLocation" value="Casablanca, Maroc" onchange="updateCard()">
+                </div>
+                <button class="update-btn" onclick="updateCard()">Mettre à jour la carte</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let qrcode = null;
+
+        function generateVCardString() {
+            const name = document.getElementById('inputName').value;
+            const title = document.getElementById('inputTitle').value;
+            const company = document.getElementById('inputCompany').value;
+            const email = document.getElementById('inputEmail').value;
+            const phone = document.getElementById('inputPhone').value;
+            const website = document.getElementById('inputWebsite').value;
+            const location = document.getElementById('inputLocation').value;
+
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+ORG:${company}
+TITLE:${title}
+TEL:${phone}
+EMAIL:${email}
+URL:${website}
+ADR:;;${location};;;;
+END:VCARD`;
+
+            return vcard;
+        }
+
+        function generateQRCode() {
+            const vcard = generateVCardString();
+            
+            // Clear existing QR code
+            document.getElementById('qrcode').innerHTML = '';
+            
+            // Generate new QR code
+            qrcode = new QRCode(document.getElementById('qrcode'), {
+                text: vcard,
+                width: 256,
+                height: 256,
+                colorDark : '#000000',
+                colorLight : '#ffffff',
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        function updateCard() {
+            // Update display
+            document.getElementById('displayName').textContent = document.getElementById('inputName').value;
+            document.getElementById('displayTitle').textContent = document.getElementById('inputTitle').value;
+            document.getElementById('displayCompany').textContent = document.getElementById('inputCompany').value;
+            document.getElementById('displayEmail').textContent = document.getElementById('inputEmail').value;
+            document.getElementById('displayPhone').textContent = document.getElementById('inputPhone').value;
+            document.getElementById('displayWebsite').textContent = document.getElementById('inputWebsite').value;
+            document.getElementById('displayLocation').textContent = document.getElementById('inputLocation').value;
+            
+            // Update profile initial
+            const name = document.getElementById('inputName').value;
+            const initial = name ? name.charAt(0).toUpperCase() : 'K';
+            document.getElementById('profileInitial').textContent = initial;
+            
+            // Regenerate QR code
+            generateQRCode();
+        }
+
+        function downloadVCard() {
+            const vcard = generateVCardString();
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'carte-visite.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function downloadQRCode() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const url = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'qrcode-carte-visite.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+
+        // Initialize QR code on page load
+        window.onload = function() {
+            generateQRCode();
+        };
+    </script>
+</body>
+</html>

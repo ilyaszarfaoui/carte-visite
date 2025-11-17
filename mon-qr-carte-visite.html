@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamal - GROUPE CASHPLUS | Carte de Visite</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Mode Affichage QR Code (pour montrer aux gens) */
+        .qr-display-mode {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .qr-display-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .display-title {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .display-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        #mainQRCode {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .scan-instruction {
+            background: #f0f7ff;
+            padding: 15px 25px;
+            border-radius: 15px;
+            color: #0066cc;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Carte de Visite (ce que les gens voient après scan) */
+        .business-card {
+            display: none;
+            background: white;
+            max-width: 450px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            color: #667eea;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card-name {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 5px;
+        }
+
+        .card-company {
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-value {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .skills-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .skills-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #e8f0ff 0%, #f3e8ff 100%);
+            color: #5e72e4;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        /* Mode Mobile */
+        @media (max-width: 480px) {
+            .qr-display-card {
+                padding: 30px 20px;
+            }
+
+            #mainQRCode {
+                transform: scale(0.9);
+            }
+
+            .card-name {
+                font-size: 24px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mode 1: Affichage du QR Code (ce que vous montrez) -->
+    <div id="qrDisplayMode" class="qr-display-mode">
+        <div class="qr-display-card">
+            <div class="company-logo">GC</div>
+            <h1 class="display-title">Kamal</h1>
+            <p class="display-subtitle">GROUPE CASHPLUS</p>
+            
+            <div class="scan-instruction pulse">
+                <span>📱</span>
+                <span>Scannez pour obtenir ma carte de visite</span>
+            </div>
+            
+            <div id="mainQRCode"></div>
+            
+            <p style="color: #999; font-size: 13px; margin-top: 20px;">
+                Administrateur Base de Données<br>
+                & Développeur Software
+            </p>
+        </div>
+    </div>
+
+    <!-- Mode 2: La Carte de Visite (ce que les gens voient après scan) -->
+    <div id="businessCard" class="business-card">
+        <div class="card-header">
+            <div class="profile-pic">K</div>
+            <h1 class="card-name">Kamal</h1>
+            <p class="card-title">Administrateur Base de Données & Développeur</p>
+            <p class="card-company">GROUPE CASHPLUS</p>
+        </div>
+        
+        <div class="card-body">
+            <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div class="contact-info">
+                    <div class="contact-label">Email Professionnel</div>
+                    <div class="contact-value">kamal@cashplus.ma</div>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">📱</div>
+                <div class="contact-info">
+                    <div class="contact-label">Téléphone</div>
+                    <div class="contact-value">+212 6XX XXX XXX</div>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">💼</div>
+                <div class="contact-info">
+                    <div class="contact-label">Poste</div>
+                    <div class="contact-value">DBA & Software Developer</div>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div class="contact-info">
+                    <div class="contact-label">Localisation</div>
+                    <div class="contact-value">Casablanca, Maroc</div>
+                </div>
+            </div>
+            
+            <div class="skills-section">
+                <h3 class="skills-title">Compétences & Expertises</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">SQL Server</span>
+                    <span class="skill-tag">Database Admin</span>
+                    <span class="skill-tag">Frappe/ERPNext</span>
+                    <span class="skill-tag">OptiBoard</span>
+                    <span class="skill-tag">Crystal Reports</span>
+                    <span class="skill-tag">VBScript</span>
+                    <span class="skill-tag">.NET</span>
+                    <span class="skill-tag">Performance SQL</span>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="action-btn btn-primary" onclick="saveContact()">
+                    📥 Enregistrer Contact
+                </button>
+                <a href="mailto:kamal@cashplus.ma" class="action-btn btn-secondary">
+                    ✉️ Envoyer Email
+                </a>
+                <a href="tel:+2126XXXXXXXX" class="action-btn btn-secondary">
+                    📞 Appeler
+                </a>
+                <button class="action-btn btn-primary" onclick="shareCard()">
+                    📤 Partager
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton pour basculer entre les modes -->
+    <button id="toggleBtn" class="toggle-btn" onclick="toggleMode()">
+        Voir le QR Code
+    </button>
+
+    <script>
+        // Données de la carte
+        const cardData = {
+            name: "Kamal",
+            company: "GROUPE CASHPLUS",
+            title: "Administrateur Base de Données & Développeur",
+            email: "kamal@cashplus.ma",
+            phone: "+212 6XX XXX XXX",
+            mobile: "+212 6XX XXX XXX",
+            address: "Casablanca, Maroc",
+            website: "www.cashplus.ma"
+        };
+
+        // Générer vCard
+        function generateVCard() {
+            return `BEGIN:VCARD
+VERSION:3.0
+FN:${cardData.name}
+ORG:${cardData.company}
+TITLE:${cardData.title}
+TEL;TYPE=WORK:${cardData.phone}
+TEL;TYPE=CELL:${cardData.mobile}
+EMAIL:${cardData.email}
+ADR;TYPE=WORK:;;${cardData.address};;;;
+URL:${cardData.website}
+NOTE:Expert SQL Server, Frappe/ERPNext, OptiBoard - Database Administration & Software Development
+END:VCARD`;
+        }
+
+        // Générer le QR Code principal
+        function generateMainQR() {
+            const vcard = generateVCard();
+            
+            // Pour une utilisation réelle, vous devrez héberger cette page
+            // et utiliser l'URL réelle. Pour l'instant, on met la vCard
+            new QRCode(document.getElementById("mainQRCode"), {
+                text: vcard, // Remplacez par l'URL de votre carte hébergée
+                width: 280,
+                height: 280,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Sauvegarder le contact
+        function saveContact() {
+            const vcard = generateVCard();
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'kamal-cashplus.vcf';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Partager la carte
+        function shareCard() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Carte de Visite - Kamal',
+                    text: 'Kamal - GROUPE CASHPLUS | Administrateur Base de Données & Développeur',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback: copier le lien
+                navigator.clipboard.writeText(window.location.href);
+                alert('Lien copié dans le presse-papier !');
+            }
+        }
+
+        // Basculer entre les modes
+        function toggleMode() {
+            const qrMode = document.getElementById('qrDisplayMode');
+            const cardMode = document.getElementById('businessCard');
+            const btn = document.getElementById('toggleBtn');
+            
+            if (qrMode.style.display === 'none') {
+                qrMode.style.display = 'flex';
+                cardMode.style.display = 'none';
+                btn.textContent = 'Voir la Carte';
+            } else {
+                qrMode.style.display = 'none';
+                cardMode.style.display = 'block';
+                btn.textContent = 'Voir le QR Code';
+            }
+        }
+
+        // Vérifier si on arrive avec un paramètre (après scan)
+        function checkMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'card') {
+                document.getElementById('qrDisplayMode').style.display = 'none';
+                document.getElementById('businessCard').style.display = 'block';
+                document.getElementById('toggleBtn').style.display = 'block';
+            }
+        }
+
+        // Initialisation
+        window.onload = function() {
+            generateMainQR();
+            checkMode();
+        };
+    </script>
+</body>
+</html>
